@@ -1,0 +1,41 @@
+{
+  "name": "@viero/recorder",
+  "version": "1.0.0",
+  "description": "A MediaRecorder wrapper.",
+  "homepage": "https://github.com/vieroinc/viero-recorder",
+  "contributors": [
+    {
+      "name": "Zoltan Gobolos",
+      "email": "zoltan.gobolos@viero.tv"
+    }
+  ],
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vieroinc/viero-recorder.git"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "reset": "npm run clean && rimraf node_modules",
+    "lint": "eslint ./src",
+    "build": "npm run lint && npm run clean && babel src -d ./dist --source-maps inline",
+    "dist": "npm run build && copyfiles package.json README.md LICENSE.md dist",
+    "npmjs": "npm run dist && npm publish ./dist --access public"
+  },
+  "module": "./index.js",
+  "dependencies": {
+    "@viero/common": "^1.5.2",
+    "event-target-shim": "^5.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "copyfiles": "^2.3.0",
+    "eslint": "^7.5.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "prettier": "^2.0.5",
+    "rimraf": "^3.0.2"
+  }
+}
