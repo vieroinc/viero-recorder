@@ -1,6 +1,6 @@
 {
   "name": "@viero/recorder",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A MediaRecorder wrapper.",
   "homepage": "https://github.com/vieroinc/viero-recorder",
   "contributors": [

@@ -54,6 +54,10 @@ export class VieroRecorder extends EventTarget {
     return this._stream;
   }
 
+  get recording() {
+    return !!this._recorder;
+  }
+
   start() {
     if (this._recorder) {
       throw new VieroError('VieroRecorder', 699688);
