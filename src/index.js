@@ -69,7 +69,7 @@ export class VieroRecorder extends EventTarget {
 
   stop() {
     if (!this._recorder) {
-      throw new VieroError('VieroRecorder', 188805);
+      return;
     }
     this._recorder.stop();
     this._recorder.removeEventListener('dataavailable', this._onDataAvailableProxy);
