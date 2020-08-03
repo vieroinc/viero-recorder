@@ -20,19 +20,51 @@ import { VieroError } from '@viero/common/error';
 export class VieroRecorder extends EventTarget {
   constructor(splitInterval, options) {
     super();
+
+    this._splitInterval = splitInterval || 0;
+    this._options = options || {};
+
     this._recorder = null;
-    this._splitInterval = splitInterval;
-    this._options = options;
     this._onDataAvailableProxy = this._onDataAvailable.bind(this);
   }
 
-  start(stream) {
+  get splitInterval() {
+    return this._splitInterval;
+  }
+
+  set splitInterval(splitInterval) {
+    this._splitInterval = splitInterval;
+  }
+
+  get options() {
+    return this._options;
+  }
+
+  set options(options) {
+    this._options = options;
+  }
+
+  set stream(stream) {
+    this.stop();
+    this._stream = stream;
+    this.dispatchEvent(new CustomEvent(VieroRecorder.EVENT.STREAM_DID_CHANGE));
+  }
+
+  get stream() {
+    return this._stream;
+  }
+
+  start() {
     if (this._recorder) {
       throw new VieroError('VieroRecorder', 699688);
     }
-    this._recorder = new MediaRecorder(stream, this._options); // ?? API
+    if (!this._stream) {
+      throw new VieroError('VieroRecorder', 262213);
+    }
+    this._recorder = new MediaRecorder(this._stream, this._options); // ?? API
     this._recorder.addEventListener('dataavailable', this._onDataAvailableProxy);
     this._recorder.start(this._splitInterval);
+    this.dispatchEvent(new CustomEvent(VieroRecorder.EVENT.DID_START));
   }
 
   stop() {
@@ -42,6 +74,7 @@ export class VieroRecorder extends EventTarget {
     this._recorder.stop();
     this._recorder.removeEventListener('dataavailable', this._onDataAvailableProxy);
     this._recorder = null;
+    this.dispatchEvent(new CustomEvent(VieroRecorder.EVENT.DID_STOP));
   }
 
   _onDataAvailable(evt) {
@@ -50,5 +83,8 @@ export class VieroRecorder extends EventTarget {
 }
 
 VieroRecorder.EVENT = {
+  DID_START: 'VieroRecorderEventDidStart',
+  DID_STOP: 'VieroRecorderEventDidEnd',
+  STREAM_DID_CHANGE: 'VieroRecorderEventStreamDidChange',
   DATA_AVAILABLE: 'VieroRecorderEventDataAvailable',
 };
