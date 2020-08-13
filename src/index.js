@@ -17,6 +17,21 @@
 import { EventTarget } from 'event-target-shim';
 import { VieroError } from '@viero/common/error';
 
+const EXT_MIME = {
+  'video/x-matroska': 'mkv',
+  'video/mp4': 'mp4',
+  'video/webm': 'webm',
+  'video/quicktime': 'mov',
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  mkv: 'video/x-matroska',
+  mp4: 'video/mp4',
+  webm: 'video/webm',
+  mov: 'video/quicktime',
+  jpg: 'image/jpeg',
+  png: 'image/png',
+};
+
 export class VieroRecorder extends EventTarget {
   constructor(splitInterval, options) {
     super();
@@ -85,6 +100,9 @@ export class VieroRecorder extends EventTarget {
     this.dispatchEvent(new CustomEvent(VieroRecorder.EVENT.DATA_AVAILABLE, { detail: { blob: evt.data } }));
   }
 }
+
+export const mime2Ext = (extOrMime) => EXT_MIME[extOrMime];
+export const ext2Mime = mime2Ext;
 
 VieroRecorder.EVENT = {
   DID_START: 'VieroRecorderEventDidStart',
