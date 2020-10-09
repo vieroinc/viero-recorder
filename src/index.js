@@ -16,14 +16,18 @@
 
 import { EventTarget } from 'event-target-shim';
 import { VieroError } from '@viero/common/error';
+import { parseMime } from '@viero/common/media';
 
-const EXT_MIME = {
+const MIME_2_EXT = {
   'video/x-matroska': 'mkv',
   'video/mp4': 'mp4',
   'video/webm': 'webm',
   'video/quicktime': 'mov',
   'image/jpeg': 'jpg',
   'image/png': 'png',
+};
+
+const EXT_2_MIME = {
   mkv: 'video/x-matroska',
   mp4: 'video/mp4',
   webm: 'video/webm',
@@ -101,8 +105,8 @@ export class VieroRecorder extends EventTarget {
   }
 }
 
-export const mime2Ext = (extOrMime) => EXT_MIME[extOrMime];
-export const ext2Mime = mime2Ext;
+export const mime2Ext = (mime) => MIME_2_EXT[parseMime(mime).type];
+export const ext2Mime = (ext) => EXT_2_MIME[ext];
 
 VieroRecorder.EVENT = {
   DID_START: 'VieroRecorderEventDidStart',
