@@ -16,7 +16,7 @@
 
 import { EventTarget } from 'event-target-shim';
 import { VieroError } from '@viero/common/error';
-import { parseMime } from '@viero/common/media';
+import { parseMime } from '@viero/common/mime';
 
 const MIME_2_EXT = {
   'video/x-matroska': 'mkv',
@@ -105,7 +105,7 @@ export class VieroRecorder extends EventTarget {
   }
 }
 
-export const mime2Ext = (mime) => MIME_2_EXT[parseMime(mime).type];
+export const mime2Ext = (mime) => MIME_2_EXT[parseMime(mime).essence];
 export const ext2Mime = (ext) => EXT_2_MIME[ext];
 
 VieroRecorder.EVENT = {
